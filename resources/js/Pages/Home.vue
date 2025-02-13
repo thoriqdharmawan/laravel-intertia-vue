@@ -1,6 +1,14 @@
+<script setup>
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const page = usePage()
+
+const user = computed(() => page.props.auth.user)
+</script>
+
 <template>
 
-  <Head title=" | Home"></Head>
-  <h2 class="text-6xl text-red-500">Hello world</h2>
-  <h2 class="text-yellow-500 text-4xl font-semibold">Hello world</h2>
+  <Head :title="` | ${$page.component}`"></Head>
+  <h2>{{ user }}</h2>
 </template>

@@ -1,16 +1,19 @@
 <script setup>
-import { reactive } from 'vue';
+import { useForm } from "@inertiajs/vue3";
+import TextInput from "../Components/TextInput.vue";
 
-const form = reactive({
+const form = useForm({
   name: null,
   email: null,
   password: null,
   password_confirmation: null,
-})
+});
 
 const submit = () => {
-  console.log(form)
-}
+  form.post(route("register"), {
+    onError: () => form.reset("password", "password_confirmation"),
+  });
+};
 </script>
 
 <template>
@@ -21,25 +24,19 @@ const submit = () => {
 
   <div class="w-2/4 mx-auto">
     <form @submit.prevent="submit">
-      <div class="mb-6">
-        <label for="name">Name</label>
-        <input type="text" id="name" v-model="form.name" />
-      </div>
-      <div class="mb-6">
-        <label for="email">Email</label>
-        <input type="text" id="email" v-model="form.email" />
-      </div>
-      <div class="mb-6">
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model="form.password" />
-      </div>
-      <div class="mb-6">
-        <label for="confirm_password">Confirm Password</label>
-        <input type="password" id="confirm_password" v-model="form.password_confirmation" />
-      </div>
+      <TextInput name="name" v-model="form.name" :message="form.errors.name" id="name" />
+      <TextInput name="email" v-model="form.email" :message="form.errors.email" type="email" id="email" />
+      <TextInput name="password" v-model="form.password" :message="form.errors.password" type="password"
+        id="password" />
+      <TextInput name="confirm password" v-model="form.password_confirmation" type="password"
+        id="password_confirmation" />
       <div>
-        <p class="text-slate-600 mb-2">Already a user? <a href="#" class="text-link">Login</a></p>
-        <button class="primary-btn">Login</button>
+        <p class="text-slate-600 mb-2">
+          Already a user? <a href="#" class="text-link">Login</a>
+        </p>
+        <button class="primary-btn" :disabled="form.processing">
+          Login
+        </button>
       </div>
     </form>
   </div>

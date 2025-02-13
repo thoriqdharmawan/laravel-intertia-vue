@@ -11,4 +11,6 @@ const user = computed(() => page.props.auth.user)
 
   <Head :title="` | ${$page.component}`"></Head>
   <h2>{{ user }}</h2>
+
+  <Link class="mt-[1400px] block" href="/" preserve-scroll>Refresh</Link>
 </template>

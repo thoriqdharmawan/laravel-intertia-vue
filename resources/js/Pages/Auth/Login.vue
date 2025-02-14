@@ -3,39 +3,44 @@ import { useForm } from "@inertiajs/vue3";
 import TextInput from "../Components/TextInput.vue";
 
 const form = useForm({
-  name: null,
   email: null,
   password: null,
-  password_confirmation: null,
+  remember: null
 });
 
 const submit = () => {
-  form.post(route("register"), {
-    onError: () => form.reset("password", "password_confirmation"),
+  form.post(route("login"), {
+    onError: () => form.reset("password", 'remember'),
   });
 };
 </script>
 
 <template>
 
-  <Head title="Register"></Head>
+  <Head title="Login"></Head>
 
-  <h1 class="title">Register a new account</h1>
+  <h1 class="title">Login to your account</h1>
 
   <div class="w-2/4 mx-auto">
     <form @submit.prevent="submit">
-      <TextInput name="name" v-model="form.name" :message="form.errors.name" id="name" />
       <TextInput name="email" v-model="form.email" :message="form.errors.email" type="email" id="email" />
       <TextInput name="password" v-model="form.password" :message="form.errors.password" type="password"
         id="password" />
-      <TextInput name="confirm password" v-model="form.password_confirmation" type="password"
-        id="password_confirmation" />
-      <div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" v-model="form.remember" id="remember" />
+          <label for="remember">Remember me</label>
+        </div>
+
         <p class="text-slate-600 mb-2">
-          Already a user? <a :href="route('login')" class="text-link">Login</a>
+          Need an account? <a :href="route('register')" class="text-link">register</a>
         </p>
+      </div>
+
+      <div>
         <button class="primary-btn" :disabled="form.processing">
-          Register
+          Login
         </button>
       </div>
     </form>

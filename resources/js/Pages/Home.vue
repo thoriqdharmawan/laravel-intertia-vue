@@ -1,9 +1,17 @@
 <script setup>
+import { ref, watch } from 'vue';
 import PaginationLinks from './Components/PaginationLinks.vue';
+import { router } from '@inertiajs/vue3'
+import { debounce } from 'lodash';
 
-defineProps({
+const props = defineProps({
   users: Object,
+  searchTerm: String
 });
+
+const search = ref(props.searchTerm)
+
+watch(search, debounce((q) => router.get('/', { search: q }, { preserveState: true }), 500))
 
 const getDate = (date) => {
   return new Date(date).toLocaleDateString("en-us", {
@@ -19,6 +27,12 @@ const getDate = (date) => {
   <Head :title="` | ${$page.component}`"></Head>
 
   <div>
+    <div class="flex justify-end mb-4">
+      <div class="w-1/4">
+        <input type="search" placeholder="Search" v-model="search" />
+      </div>
+    </div>
+
     <table>
       <thead>
         <tr class="bg-slate-300">
